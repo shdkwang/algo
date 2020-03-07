@@ -6,34 +6,32 @@ package com.dk.leetcode.dp.Knapsack;
 /// 空间复杂度: O(n * C)
 public class Solution2 {
 
-    public int knapsack01(int[] w, int[] v, int C){
+    public int knapsack01(int[] weight, int[] value, int capacity) {
+        if (weight == null || value == null || weight.length != value.length)
+            throw new IllegalArgumentException("Invalid weight or value");
 
-        if(w == null || v == null || w.length != v.length)
-            throw new IllegalArgumentException("Invalid w or v");
+        if (capacity < 0)
+            throw new IllegalArgumentException("capacity must be greater than or equal to zero.");
 
-        if(C < 0)
-            throw new IllegalArgumentException("C must be greater or equal to zero.");
-
-        int n = w.length;
-        if(n == 0 || C == 0)
+        int n = weight.length;
+        if (n == 0 || capacity == 0)
             return 0;
 
-        int[][] memo = new int[n][C + 1];
+        int[][] memo = new int[n][capacity + 1];
+        
+        for (int j = 0; j <= capacity; j++) {
+            memo[0][j] = (j >= weight[0] ? value[0] : 0);
+        }
 
-        for(int j = 0 ; j <= C ; j ++)
-            memo[0][j] = (j >= w[0] ? v[0] : 0 );
-
-        for(int i = 1 ; i < n ; i ++)
-            for(int j = 0 ; j <= C ; j ++){
+        for (int i = 1; i < n ; i++) {
+            for (int j = 0; j<= capacity ; j++) {
                 memo[i][j] = memo[i-1][j];
-                if(j >= w[i])
-                    memo[i][j] = Math.max(memo[i][j], v[i] + memo[i - 1][j - w[i]]);
+                if (j >= weight[i]) {
+                    memo[i][j] = Math.max( memo[i][j], value[i] + memo[i-1][j-weight[i]]);
+                }
             }
+        }
 
-        return memo[n - 1][C];
-    }
-
-    public static void main(String[] args) {
-
+        return memo[n-1][capacity];
     }
 }
