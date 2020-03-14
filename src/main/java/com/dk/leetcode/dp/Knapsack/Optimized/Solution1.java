@@ -1,5 +1,9 @@
 package com.dk.leetcode.dp.Knapsack.Optimized;
 
+/// 背包问题
+/// 动态规划改进: 滚动数组
+/// 时间复杂度: O(n * C) 其中n为物品个数; C为背包容积
+/// 空间复杂度: O(C), 实际使用了2*C的额外空间
 public class Solution1 {
     public int knapsack01(int[] weight, int[] value, int capacity) {
         if (weight == null || value == null || weight.length != value.length)
